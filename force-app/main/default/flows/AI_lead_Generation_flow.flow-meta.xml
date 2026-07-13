@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>67.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <decisions>
+        <name>Check_Budget</name>
+        <label>Check Budget</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>low</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>High_Budget</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record__Prior.Budget__c</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <numberValue>100000.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>updating_budget</targetReference>
+            </connector>
+            <label>High Budget</label>
+        </rules>
+    </decisions>
+    <description>Triggers AI Lead generation when a project record is created or updated</description>
+    <environments>Default</environments>
+    <interviewLabel>AI_lead_Generation_flow {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>AI_lead_Generation_flow</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>low</name>
+        <label>low</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>AI_recommendation__c</field>
+            <value>
+                <stringValue>mediunm priority</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Lead_Score__c</field>
+            <value>
+                <numberValue>50.0</numberValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>updating_budget</name>
+        <label>updating budget</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>AI_recommendation__c</field>
+            <value>
+                <stringValue>high priority lead</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Lead_Score__c</field>
+            <value>
+                <numberValue>90.0</numberValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Check_Budget</targetReference>
+        </connector>
+        <object>Project__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Obsolete</status>
+</Flow>
